@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: kafka-implementation
+
+server:
+  port: 8080
+  servlet:
+    context-path: /kafka-test
+
+app:
+  kafka:
+    bootstrap-servers: localhost:9092
+    group-id: spring-service-group
+    topics:
+      user: user.events
+      user.validation: user.validation.events
+    schema-registry-url: http://localhost:8081
