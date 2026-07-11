@@ -1,0 +1,31 @@
+{
+  "type": "record",
+  "name": "OrderCreatedEventAvro",
+  "namespace": "com.soldev.sharedevents",
+  "doc": "Esquema que representa la creación de una orden en el sistema",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string",
+      "doc": "UUID único del evento para control de idempotencia"
+    },
+    {
+      "name": "orderId",
+      "type": "string",
+      "doc": "ID único de la orden"
+    },
+    {
+      "name": "customerId",
+      "type": "string"
+    },
+    {
+      "name": "totalAmount",
+      "type": "double"
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "doc": "Timestamp en formato ISO-8601"
+    }
+  ]
+}
