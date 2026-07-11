@@ -1,0 +1,17 @@
+server:
+  port: 8081 # PUERTO DISTINTO para que puedan correr al mismo tiempo
+
+spring:
+  application:
+    name: inventory-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: inventory-group # Nombre del Consumer Group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.soldev.sharedevents.*" # MUY IMPORTANTE para poder deserializar
+    listener:
+      ack-mode: manual # Para hacer el commit manualmente tras verificar la idempotencia

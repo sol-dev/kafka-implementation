@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+
+server:
+  port: 8080 # Puerto de la API REST
+
+app:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all # Garantía de entrega a todas las réplicas
+      properties:
+        enable.idempotence: true # Productor idempotente
