@@ -1,12 +1,23 @@
 server:
-  port: 8081
+  port: 8082
   servlet:
     context-path: /inventory
 
 spring:
   application:
     name: inventory-service
-app:
+  datasource:
+    url: jdbc:mysql://localhost:3307/inventory_db?createDatabaseIfNotExist=true # Nota el puerto 3307
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -16,12 +27,13 @@ app:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # Value: Deserializador de Confluent para Avro
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-    properties:
-      schema.registry.url: http://localhost:8081
-      specific.avro.reader: true  # Convierte el byte array a tu clase Java autogenerada
-  listener:
-    # GARANTÍA DE ARQUITECTURA: Control total del commit para Idempotencia
-    ack-mode: manual_immediate # Para hacer el commit manualmente tras verificar la idempotencia
+      properties:
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true  # Convierte el byte array a tu clase Java autogenerada
+    listener:
+      # GARANTÍA DE ARQUITECTURA: Control total del commit para Idempotencia
+      ack-mode: manual_immediate # Para hacer el commit manualmente tras verificar la idempotencia
 
-    # Configuraciones de negocio para escuchar
-  topic: order.created.events
+app:
+  kafka:
+    topic: order.created.events

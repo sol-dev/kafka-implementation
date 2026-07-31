@@ -1,0 +1,16 @@
+spring:
+  kafka:
+    consumer:
+      group-id: inventory-service-group
+    bootstrap-servers: localhost:9092
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+app:
+  kafka:
+    topic: test-topic

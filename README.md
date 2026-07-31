@@ -1,6 +1,6 @@
-Proyecto en Spring Boot implementando Kafka
+Proyecto en Spring Boot implementando Kafka y arquitectura Hexagonal
 
-Tecnologías:
+### Tecnologías:
 - Spring Boot 3.5
 - Apache Kafka con Apache Avro
 - Zookeeper
@@ -19,3 +19,27 @@ Es un servicio centralizado que almacena un Diccionario de esquemas Avro. Antes 
 4. **Confluent Control Center(Puerto 9021)** </br>
 Es una herramienta visual de Confluent (una página web) que permite administrar y monitorear el clúster. Permite ver si se están creando bien los tópicos, inspeccionar mensajes, ver la salud del cluster y revisar los esquemas.
 
+### Microservicios:
+1. **order-service** [Puerto 8080 - MySQL puerto 3306]
+2. **inventory-service** [Puerto 8082 - MySQL puerto 3307]
+
+### Caso de uso:
+
+##### At-Least-Once Delivery con Consumidor Idempotente </br>
+topic: order.created.events </br>
+<u>Producer</u>: order-service POST/orders/v1/orders </br>
+acks: all -> Garantía de entrega a todas las réplicas </br>
+enable.idempotence=true  </br>
+
+
+<u>Consumer</u>: inventory-service </br>
+ack-mode: manual_immediate -> Para hacer el commit manualmente tras verificar la idempotencia.  </br>
+- El consumidor hace ack.acknowledge() después de procesar el mensaje.
+- Si el consumidor se cae a mitad del proceso, Kafka reentregará el mensaje.
+- No se pierden mensajes pero hay riesgo de duplicidad. Por este motivo se agrega la validación de idempotencia en el consumidor.
+
+### Pasos para levantar el proyecto
+1. `mvn clean install`
+2. `docker compose up -d` para generar los contenedores 
+3. `cd order-service/ && mvn spring-boot:run`
+4. `cd ../inventory-service/ && mvn spring-boot:run`
