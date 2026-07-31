@@ -27,6 +27,7 @@ public class KafkaOrderEventEventPublisherAdapter implements OrderEventPublisher
 
     @Override
     public void publishOrderCreated(Order order) {
+        log.info("ORDER-PUBLISHER: publishing event for order {}", order.toString());
         // 1. Transformamos al contrato Avro
         OrderCreatedEventAvro avroEvent = orderEventMapper.toAvro(order);
 

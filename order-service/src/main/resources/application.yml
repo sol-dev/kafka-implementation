@@ -1,13 +1,19 @@
 spring:
   application:
     name: order-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/order_db?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-server:
-  port: 8080 # Puerto de la API REST
-  servlet:
-    context-path: /orders
-
-app:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
   kafka:
     bootstrap-servers: localhost:9092
     producer:
@@ -16,9 +22,20 @@ app:
       # Value: El serializador de Confluent para Avro
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       # GARANTÍAS DE ARQUITECTURA
+      # Producer Acknowledgement
       acks: all # Garantía de entrega a todas las réplicas
+        #acks: 0 -> fire and forget: el productor envia el mensaje, no recibo ack
+        #acks: 1 -> solo el lider confirma
       properties:
         enable.idempotence: true # Productor idempotente
         schema.registry.url: http://localhost:8081
+
+server:
+  port: 8080 # Puerto de la API REST
+  servlet:
+    context-path: /orders
+
+app:
+  kafka:
     #Negocio
     topic: order.created.events

@@ -24,6 +24,8 @@ public interface OrderEventMapper {
     default String generateEventId(Order order) {
         // Garantía de arquitectura: Generamos el UUID único del evento aquí
         return UUID.randomUUID().toString();
+        //FORZAR REENVIO MENSAJE YA PROCESADO
+        // return "f34a4190-8555-4a20-97d3-8b59a0d9cc58";
     }
 
     @Named("mapLocalDateTimeToString")
