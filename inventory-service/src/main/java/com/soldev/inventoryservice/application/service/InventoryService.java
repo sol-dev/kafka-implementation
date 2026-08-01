@@ -14,6 +14,9 @@ public class InventoryService implements ProcessOrderUseCase {
     @Override
     public void process(OrderResolution order) {
         log.info("Ejecutando lógica de negocio: Reservando stock para la orden: {}", order.orderId());
+
+        //Prueba dead letter queue
+        throw new RuntimeException("Simulando error fatal de base de datos");
     }
 
 
