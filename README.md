@@ -25,7 +25,7 @@ Es una herramienta visual de Confluent (una página web) que permite administrar
 
 ### Caso de uso:
 
-##### At-Least-Once Delivery con Consumidor Idempotente </br>
+#### A) At-Least-Once Delivery con Consumidor Idempotente </br>
 topic: order.created.events </br>
 <u>Producer</u>: order-service POST/orders/v1/orders </br>
 acks: all -> Garantía de entrega a todas las réplicas </br>
@@ -37,6 +37,15 @@ ack-mode: manual_immediate -> Para hacer el commit manualmente tras verificar la
 - El consumidor hace ack.acknowledge() después de procesar el mensaje.
 - Si el consumidor se cae a mitad del proceso, Kafka reentregará el mensaje.
 - No se pierden mensajes pero hay riesgo de duplicidad. Por este motivo se agrega la validación de idempotencia en el consumidor.
+
+#### B) DeadLetterQueue At-Least-Once Delivery con Consumidor Idempotente </br>
+**order-service** publica un mensaje en el topic order.created.events.
+**inventory-service:**
+1. Listener KafkaOrderConsumerAdapter escucha el mensaje e intenta procesarlo 3 veces sin éxito
+2. El framework del consumidor actúa como productor, genera un mensaje DLQ y se envía al topic order.created.events-dlt
+3. El listener marca el mensaje del tópico original como "consumido", envía ack y Kafka avanza el offset
+4. Un segundo listener de la DLQ KafkaDLQConsumerAdapter escucha el tópico order.created.events-dlt
+5. Guarda el error en la base de datos, ack para mover el offset de este tópico
 
 ### Pasos para levantar el proyecto
 1. `mvn clean install`

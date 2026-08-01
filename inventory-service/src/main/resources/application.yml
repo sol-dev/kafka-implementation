@@ -33,6 +33,11 @@ spring:
     listener:
       # GARANTÍA DE ARQUITECTURA: Control total del commit para Idempotencia
       ack-mode: manual_immediate # Para hacer el commit manualmente tras verificar la idempotencia
+    producer: #Dead letter queue config
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081
 
 app:
   kafka:
