@@ -32,7 +32,7 @@ public class KafkaOrderEventEventPublisherAdapter implements OrderEventPublisher
         OrderCreatedEventAvro avroEvent = orderEventMapper.toAvro(order);
 
         // 2. Garantía de orden: Usamos el ID de la orden como Partition Key
-        String key = order.getId();
+        String key = order.getId().toString();
 
         log.info("Publicando evento de Orden Creada en Kafka. Topic: {}, Partition Key: {}, EventId: {}",
                 topic, key, avroEvent.getEventId());

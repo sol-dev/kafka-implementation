@@ -37,7 +37,7 @@ public class KafkaDLQConsumerAdapter {
     ) {
         com.soldev.sharedevents.OrderCreatedEventAvro event = record.value();
         String eventId = event.getEventId().toString();
-        String orderId = event.getOrderId().toString();
+        String orderId = String.valueOf(event.getOrderId());
 
         logger.error("Procesando mensaje fallido en DLQ. EventId: {}, Error: {}", eventId, exceptionMessage);
         try {

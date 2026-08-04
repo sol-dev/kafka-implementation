@@ -11,7 +11,6 @@ public class OrderRequestMapper {
 
     public Order mapCreationRequest(OrderCreationRequest request){
         Order order = new Order();
-        order.setId(request.getId());
         order.setCustomerId(request.getCustomerId());
         order.setTotalAmount(request.getTotalAmount());
         order.setCreatedAt(LocalDateTime.now());

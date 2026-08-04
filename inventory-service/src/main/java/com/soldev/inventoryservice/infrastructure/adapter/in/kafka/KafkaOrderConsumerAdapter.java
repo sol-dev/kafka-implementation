@@ -34,7 +34,7 @@ public class KafkaOrderConsumerAdapter {
         try {
             //Mapear de avro a modelo de dominio
             OrderResolution orderResolution = new OrderResolution(
-                    avroEvent.getOrderId().toString(),
+                    avroEvent.getOrderId(),
                     avroEvent.getCustomerId().toString(),
                     BigDecimal.valueOf(avroEvent.getTotalAmount())
             );

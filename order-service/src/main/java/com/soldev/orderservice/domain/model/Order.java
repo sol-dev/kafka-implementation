@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class Order {
 
-    private String id;
+    private Long id;
     private String customerId;
     private BigDecimal totalAmount;
     private LocalDateTime createdAt;
